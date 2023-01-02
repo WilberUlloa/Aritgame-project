@@ -6,9 +6,12 @@ using UnityEngine.UI;
 public class Movement : MonoBehaviour
 {
 
+    [SerializeField] Timer timer;
+    [SerializeField] ActiveInterface ai;
     public float speedMovement = 4;
     private int coin = 0;
     public Text text_counter;
+    public Text text_counter2;
     private bool moveRight;
     private bool moveLeft;
     private bool moveJump;
@@ -51,10 +54,19 @@ public class Movement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if(other.gameObject.CompareTag("Tales")){ 
+        if(other.gameObject.CompareTag("Tales")){
             pyr_runing.SetBool("jumping",false);
             jumpGround = false;
             player.velocity = new Vector2(player.velocity.x, 0);
+        }
+
+        if(other.gameObject.CompareTag("Obstacles"))
+        {
+            timer.SubtractTime();
+            ai.ActivateBR(true);
+        }else
+        {
+            ai.ActivateBR(false);
         }
     }
 
@@ -63,9 +75,19 @@ public class Movement : MonoBehaviour
         if(coll.gameObject.tag == "coins"){
             coin++;
             text_counter.text = coin.ToString();
+            text_counter2.text = coin.ToString();
             Destroy(coll.gameObject);
         }
+
+        if(coll.gameObject.tag == "Starts")
+        {
+            ai.ActivateChallenges(true);
+        }else
+        {
+            ai.ActivateChallenges(false);
+        }
     }
+
 
     public void pressRight(){
         moveRight = true;

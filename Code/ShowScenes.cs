@@ -12,7 +12,7 @@ public class ShowScenes : MonoBehaviour
     {
         if(SceneStatus)
         {
-            ShowScene(index);    
+            ShowScene(index);
         }
                 
     }
